@@ -23,18 +23,20 @@ connection.once('open', function () {
 
 function mongodbQuery(query) {
     var final_query = { '$and': [] }
-    var name1 = query.name[0];
-    var name2 = query.name[1];
-    var name3 = query.name[2];
-    var view1 = query.view[0];
-    var view2 = query.view[1];
-    var view3 = query.view[2];
-    var user1 = query.user[0];
-    var user2 = query.user[1];
-    var user3 = query.user[2];
-    var premium = query.premium[0];
-    var date1 = query.date[0];
-
+    var name1 = query.Name[0];
+    var name2 = query.Name[1];
+    var name3 = query.Name[2];
+    var view1 = query.Views[0];
+    var view2 = query.Views[1];
+    var view3 = query.Views[2];
+    var user1 = query.User[0];
+    var user2 = query.User[1];
+    var user3 = query.User[2];
+    var premium = query.Premium;
+    var date1 = query.Date[0];
+    var date2 = query.Date[1];
+    var date3 = query.Date[2];
+    console.log(query)
     // console.log(query.name[0])
     var full_object = [name1, name2, name3]
 
@@ -78,10 +80,10 @@ function mongodbQuery(query) {
         }
     }
 
-    if (premium == '1') { final_query['$and'].push({ 'premiumAvailable': { '$eq': true } }) }
-    else { final_query['$and'].push({ 'premiumAvailable': { '$eq': false } }) }
+    if (premium[0] == 'Premium') { final_query['$and'].push({ 'premiumAvailable': { '$eq': true } }) }
+    else if (premium[0] == 'Not Premium') { final_query['$and'].push({ 'premiumAvailable': { '$eq': false } }) }
 
-    full_object = [date1]
+    full_object = [date1,date2,date3]
     for (ac in full_object) {
         var pattern = ""
         var view_1 = full_object[ac];
@@ -90,9 +92,9 @@ function mongodbQuery(query) {
             var a = Object.keys(name_1);
             if (a == 'After') final_query['$and'].push({ 'lastUpdate': { '$gte': new Date(name_1[a]) } });
             else if (a == 'Before') final_query['$and'].push({ 'lastUpdate': { '$lte': new Date(name_1[a]) } });
-            else if (a == 'Between') {
+            else if (a == 'On') {
                 final_query['$and'].push({ 'lastUpdate': { '$gte': new Date(name_1[a]) } });
-                final_query['$and'].push({ 'lastUpdate': { '$lte': new Date(Object.values(query.date[1])) } });
+
             }
         }
     }
@@ -109,6 +111,8 @@ app.get('/dbQuery', function (req, res) {
     amp = mongodbQuery(originalX)
     // console.log(JSON.stringify(amp))
     res.set({ 'Set-Cookie': 'SameSite:Strict' })
+    if (amp['$and'].length == 0)
+        amp = {}
     YourDBVarName.find(amp, function (err, data) {
         if (err) {
             res.send(err.message);

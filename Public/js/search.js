@@ -2,190 +2,240 @@ $('.dropdown-menu a').click(function () {
     $(this).closest('li').find('.caret').text($(this).text());
 });
 
-var ret_json = { name: { 0: "", 1: "", 2: "" }, user: { 0: "", 1: "", 2: "" }, view: { 0: "", 1: "", 2: "" }, date: { 0: "", 1: "", 2: "" }, premium: { 0: 1 } };
-var display_components = { name: { 0: "", 1: "", 2: "" }, user: { 0: "", 1: "", 2: "" }, view: { 0: "", 1: "", 2: "" }, date: { 0: "", 1: "", 2: "" }, premium: { 0: "" } };
+// var ret_json = { name: { 0: "", 1: "", 2: "" }, user: { 0: "", 1: "", 2: "" }, view: { 0: "", 1: "", 2: "" }, date: { 0: "", 1: "", 2: "" }, premium: { 0: "" } };
+var ret_json = { Name: { 0: "", 1: "", 2: "" }, User: { 0: "", 1: "", 2: "" }, Views: { 0: "", 1: "", 2: "" }, Date: { 0: "", 1: "", 2: "" }, Premium: { 0: "" } };
+// var display_components = { Name: { 0: "", 1: "", 2: "" }, User: { 0: "", 1: "", 2: "" }, Views: { 0: "", 1: "", 2: "" }, Date: { 0: "", 1: "", 2: "" }, Premium: { 0: "" } };
 var components = {}
-var name_no = 0;
-var user_no = 0;
-var view_no = 0;
-var date_no = 0;
+var name_no = -1;
+var user_no = -1;
+var view_no = -1;
+var date_no = -1;
+var premium_no = -1;
+var creteria1 = ""
+var index_query = ""
+var creteria2 = ""
+var creteriaValue = ""
+var final_input = []
+var temp_built = 0;
+var selecta = 0;
+var selectb = 0;
+var current_index = 0;
+$('#creteria').on("change", " .columnSelector", (e) => {
+    // alert(e)
+    if ($('.columnSelector').val() == 'Name') {
 
-const serialize = function (obj) {
-    var str = [];
-    for (var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        if (name_no < 2) {
+            name_no += 1;
+            $('#creteria').empty()
+            $('#creteria').append(`<select class="btn  btn-dark form-control  columnSelector col-sm-2 " data-index=0 autocomplete="off"style="width:90px">
+            <option > Query</option>
+            <option selected="selected">Name</option>
+            <option >User</option>
+            <option>Views</option>
+            <option>Date</option>
+            <option>Premium</option>
+        </select>`);
+            $('#creteria').append(`<select class="btn  btn-dark form-control col-sm-2 " id="columnCriteria" data-index=0 autocomplete = "off" style = "width:90px" >                <option selected="selected">Have</option>                <option>End with</option>                <option>Start with</option>                <option>dont contain</option>                </select >`)
+            $('#creteria').append(` <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Type keyword..." />`)
+            update_display()
         }
-    return str.join("&");
-}
-
-function associate_input_query() {
-    $('.nameCri').change(function (e) {
-        var selection = $(this).children("option:selected").val();
-        var index = $(this).attr('data-index');
-        update_criteria('name', selection, index);
-    });
-
-    $('.inputName').change(function (e) {
-        var data = $(this).val();
-        var index = $(this).attr('data-index');
-        update_criteria_value('name', data, index);
-    })
-
-    $('.viewCri').change(function (e) {
-        var selection = $(this).children("option:selected").val();
-        var index = $(this).attr('data-index');
-        update_criteria('view', selection, index);
-    });
-
-    $('.inputView').change(function (e) {
-        var data = $(this).val();
-        var index = $(this).attr('data-index');
-        update_criteria_value('view', data, index);
-    })
-
-
-    $('.userCri').change(function (e) {
-        var selection = $(this).children("option:selected").val();
-        var index = $(this).attr('data-index');
-        update_criteria('user', selection, index);
-    });
-
-    $('.inputUser').change(function (e) {
-        var data = $(this).val();
-        var index = $(this).attr('data-index');
-        update_criteria_value('user', data, index);
-    })
-
-    $('#premiumtoggle').change(function () {
-        ret_json.premium[0] = $(this).prop('checked')
-    })
-
-    $('.dateCri').change(function (e) {
-        var selection = $(this).children("option:selected").val();
-        var index = $(this).attr('data-index');
-        update_criteria('date', selection, index);
-    });
-    $('.inputDate').change(function (e) {
-        var data = $(this).val();
-        var index = $(this).attr('data-index');
-        update_criteria_value('date', data, index);
-    })
-
-
-}
-function update_criteria(type, value, index) {
-    if (type == 'date') {
-        if (value == 'Between') {
-            $('#secondDate').prop('disabled', false)
-        } else
-            $('#secondDate').prop('disabled', true)
+        temp_built = 1;
+        current_index = name_no;
     }
-    var json_ret = {}
-    if ($('.input_' + type).val() !== "" && $('.input_' + type).val() !== undefined) {
-        update_display(type, index, value, $('.input_' + type).val())
+    else if ($('.columnSelector').val() == 'User') {
+
+        if (user_no < 2) {
+            user_no += 1;
+            $('#creteria').empty()
+            $('#creteria').append(`<select class="btn  btn-dark form-control  columnSelector col-sm-2 " data-index=0 autocomplete="off"style="width:90px">
+            <option > Query</option>
+            <option >Name</option>
+            <option selected="selected">User</option>
+            <option>Views</option>
+            <option>Date</option>
+            <option>Premium</option>
+        </select>`);
+            $('#creteria').append(`<select class="btn  btn-dark form-control col-sm-2 " id="columnCriteria" data-index=0 autocomplete = "off" style = "width:90px" >
+            <option selected="selected">More than</option>
+            <option>Less than</option>
+            <option>Equal to</option>
+            </select >`)
+            $('#creteria').append(` <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Enter a whole number...."/>`)
+            update_display()
+        }
+        temp_built = 1;
+        current_index = user_no;
     }
 
-    json_ret[String(value)] = $('.input_' + type).val() || "";
-    ret_json[type][index] = json_ret;
+    else if ($('.columnSelector').val() == 'Views') {
+
+        if (view_no < 2) {
+            view_no += 1;
+            $('#creteria').empty()
+            $('#creteria').append(`<select class="btn  btn-dark form-control  columnSelector col-sm-2 " data-index=0 autocomplete="off"style="width:90px">
+            <option > Query</option>
+            <option >Name</option>
+            <option >User</option>
+            <option selected="selected">Views</option>
+            <option>Date</option>
+            <option>Premium</option>
+        </select>`);
+            $('#creteria').append(`<select class="btn  btn-dark form-control col-sm-2 " id="columnCriteria" data-index=0 autocomplete = "off" style = "width:90px" >
+            <option selected="selected">More than</option>
+            <option>Less than</option>
+            <option>Equal to</option>
+            </select >`)
+            $('#creteria').append(` <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Enter a whole number...."/>`)
+            update_display()
+        }
+        temp_built = 1;
+        current_index = view_no;
+    }
+
+    else if ($('.columnSelector').val() == 'Premium') {
+
+        if (premium_no < 2) {
+            premium_no += 1;
+            $('#creteria').empty()
+            $('#creteria').append(`<select class="btn  btn-dark form-control  columnSelector col-sm-2" data-index=0 autocomplete="off"style="width:90px">
+            <option > Query</option>
+            <option >Name</option>
+            <option >User</option>
+            <option>Views</option>
+            <option>Date</option>
+            <option  selected="selected" >Premium</option>
+            </select>`);
+
+            $('#creteria').append(`<select class="btn  btn-dark form-control col-sm-2 " id="inputCreteria__1" onchange ="premium_update()" data-index=0 autocomplete = "off" style = "width:90px" >
+            <option selected='selected'>select</option>
+            <option >Present</option>
+            <option>Not Present</option>
+            </select >`)
+            $('#creteria').append(` <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Just select a option" disabled='disabled'/>`)
+            update_display()
+        }
+        temp_built = 1;
+        current_index = premium_no;
+    }
+    else if ($('.columnSelector').val() == 'Date') {
+
+        if (date_no < 2) {
+            date_no += 1;
+            $('#creteria').empty()
+            $('#creteria').append(`<select class="btn  btn-dark form-control  columnSelector col-sm-2 " data-index=0 autocomplete="off"style="width:90px">
+            <option > Query</option>
+            <option >Name</option>
+            <option >User</option>
+            <option>Views</option>
+            <option selected="selected">Date</option>
+            <option>Premium</option>
+        </select>`);
+            $('#creteria').append(`<select class="btn  btn-dark form-control col-sm-2 " id="columnCriteria" data-index=0 autocomplete = "off" style = "width:90px" >
+            <option selected="selected">After</option>
+            <option>Before</option>
+            <option>On</option>
+            </select >`)
+            $('#creteria').append(` <input type="date" class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Enter Valid date..."/>`)
+            update_display()
+        }
+        temp_built = 1;
+        current_index = date_no;
+    }
+
+
+})
+
+function premium_update() {
+    if ($('#inputCreteria__1').val() == "Present") { ret_json.Premium = { 0: 'Premium' } }
+    else if ($('#inputCreteria__1').val() == "Not Present") { ret_json.Premium = { 0: 'Not Premium' } }
+    // ret_json.Premium = { 0: $('#inputCreteria__1').val() }
+    // alert(JSON.stringify(ret_json))
+    $('#creteria').empty()
+    $('#creteria').append(` <select class="btn  btn-dark form-control columnSelector col-sm-2" data-index=0
+    autocomplete="off">
+    <option selected="selected"> Query</option>
+    <option>Name</option>
+    <option>User</option>
+    <option>Views</option>
+    <option>Date</option>
+    <option>Premium</option>
+</select>
+<input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder=" Search Through Keyword...." />`);
+    temp_built = 0
+    update_display();
 
 }
 
-$('#secondDate').prop("disabled", true);
+$('#creteria').on("change", " .rangeKeyword", (e) => {
+    request_kind = 0;
+    var dat = $('.rangeKeyword').val()
+    $('#rangeKeyword').val("")
+    if (temp_built == 1) {
+        // alert(temp_built)
+        var datt = $('#columnCriteria').val()
+        ret_json[$('.columnSelector').val()][current_index] = {}
+        ret_json[$('.columnSelector').val()][current_index][datt] = dat;
+        // alert(12)
+        $('#creteria').empty()
+        $('#creteria').append(` <select class="btn  btn-dark form-control columnSelector col-sm-2" data-index=0
+        autocomplete="off">
+        <option selected="selected"> Query</option>
+        <option>Name</option>
+        <option>User</option>
+        <option>Views</option>
+        <option>Date</option>
+        <option>Premium</option>
+    </select>
+    <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder=" Search Through Keyword...." />`);
+        temp_built = 0
+        update_display();
+        // alert(JSON.stringify(ret_json))
+    }
+})
 
-function update_criteria_value(type, data, index) {
-
-    var json_ret = {};
-    var value = Object.keys(ret_json[type][index])[0] || $('#' + type + 'Group > div:nth-child(' + index + 1 + ') > div:nth-child(2) > div  > select').children('option:selected').val() || $('#' + 'name' + 'Group > div:nth-child(' + index + 1 + ') > div:nth-child(2) > div >select >option:eq(0)').val();
-    json_ret[String(value)] = data;
-    ret_json[type][index] = json_ret;
-    update_display(type, index, value, data)
-    // alert(type,index,value,data)
-}
 
 bootStrop_type = ['success', 'dark', 'warning', 'info', 'secondary']
 
-function update_display(type, index, value, data) {
-    display_components[type][index] = { value: data };
+function update_display() {
+
     var p = 0;
     var index = 0;
-    $('#keyword_holder0').empty()
-    $('#keyword_holder1').empty()
-    var o = 0;
     var z = 0;
     for (const prop in ret_json) {
 
-        if (prop !== 'premium') {
-            // alert(JSON.stringify(ret_json))
+        if (prop !== 'Premium') {
             var elem = ret_json[prop];
-
             for (const temp in elem) {
-                // alert(JSON.stringify(elem[]))
                 var data1 = elem[temp]
-
-
-                if (data1 !== "") {
-
-                    $('#keyword_holder' + parseInt(index / 3) % 2).append(` <div class=" col-sm-3  alert alert-` + bootStrop_type[parseInt(Math.random() * (3.9 - 0))] + ` alert-dismissible fade show" style="margin: 2px;">
-                    <strong style="font-size: small;">`+ Object.values(data1) + `</strong> <button type="button" class="close pr-2 clossing_btn"  id ="404" data-o=` + o + ` data-z=` + z + ` 
-                      >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`)
-                    p = (1 + p) % 4;
-                    index += 1;
-                }
+                if (data1 !== "")
+                    $('#creteria').prepend(` 
+                    <div class=" col-sm-2  alert alert-` + bootStrop_type[parseInt(Math.random() * (3.9 - 0))] + ` alert-dismissible fade show" >
+                    <strong style="font-size: small;">` + Object.values(data1) + `</strong>
+                     <button type="button" class="close pr-2 clossing_btn" id ="404"  data-z=` + z + ` style="top:-8px;" ><span aria-hidden="true">&times;</span></button></div>`)
                 z++;
             }
-
+        }
+        else {
+            // alert(JSON.stringify(ret_json.Premium['0'] == ""))
+            if (ret_json.Premium[0] !== "") { $('#creteria').prepend(` <div class=" col-sm-2  alert alert-` + bootStrop_type[parseInt(Math.random() * (3.9 - 0))] + ` alert-dismissible fade show" ><strong style="font-size: small;">` + ret_json.Premium[0] + `</strong> <button type="button" class="close pr-2 clossing_btn"  id ="404"  data-z=` + z + ` ><span aria-hidden="true">&times;</span></button></div>`) }
+            z++;
         }
 
-        o++;
     }
     $('.clossing_btn').click(function (e) {
         var z = $(this).attr('data-z')
         for (i in ret_json) {
             p = ret_json[i]
             for (a in p) {
-                // console.log(ret_json[, p, a)
                 if (z == 0) { ret_json[i][a] = ""; }
                 z--;
             }
         }
         $(this).closest('div').remove();
-        alert(JSON.stringify(ret_json))
+        // alert(JSON.stringify(ret_json))
     });
-}
-
-
-
-function add_tab(type) {
-
-    if (type == 'name') {
-        if (name_no < 2) {
-            name_no += 1;
-            $('#nameGroup').append(`<div class="row m-2"><div class="col-sm-1">Name</div><div class="col-sm-2"><div class="form-group">    <select class="form-control nameCri" data-index=` + name_no + ` autocomplete="off">        <option selected="selected">Have</option>        <option>End with</option>        <option>Start with</option>        <option>dont contain</option>    </select></div></div><div class="col-sm-8"><input class="form-control input_name inputName" data-index=` + name_no + `></div></div>`)
-        }
-    }
-    else if (type == 'user') {
-        if (user_no < 2) {
-            user_no += 1;
-            $('#userGroup').append(` <div class="row m-1"><div class="col-sm-1">User</div><div class="col-sm-2"><div class="form-group">    <select class="form-control  userCri " data-index=` + user_no + ` autocomplete="off">        <option selected="selected">More than</option>        <option>Less than with</option>        <option>Equal to</option>        </select></div></div><div class="col-sm-8"><input class="form-control inputUser input_user" data-index=` + user_no + ` autocomplete="off"></div></div>`)
-        }
-    }
-    else if (type == 'view') {
-        if (view_no < 2) {
-            view_no += 1;
-            $('#viewGroup').append(`<div class="row m-2"><div class="col-sm-1">    Views</div><div class="col-sm-2">    <div class="form-group">        <select class="form-control viewCri" id="view_1" data-index=` + view_no + ` autocomplete="off" >                <option selected="selected">More than</option>                 <option>Less than</option>                <option>Equal to</option>            <!-- <option>4</option> -->        </select>    </div></div><div class="col-sm-8">    <input class="form-control input_view inputView" data-index=` + view_no + `></div></div>`)
-        }
-    }
-    setTimeout(associate_input_query, 10);
 
 }
-
-$('.add_nm').click(() => { add_tab('name') });
-$('.add_view').click(() => { add_tab('view') });
-$('.add_user').click(() => { add_tab('user') });
 
 
 function tableCreater(data) {
@@ -214,38 +264,33 @@ xhttp.onreadystatechange = function () {
 
         data = JSON.parse(xhttp.response)
         $('#tableDetails').append(tableCreater(data));
+
+        $('#creteria').empty()
+        $('#creteria').append(` <select class="btn  btn-dark form-control columnSelector col-sm-2" data-index=0 
+        autocomplete="off">
+        <option selected="selected"> Query</option>
+        <option>Name</option>
+        <option>User</option>
+        <option>Views</option>
+        <option>Date</option>
+        <option>Premium</option>
+    </select>
+    <input class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder=" Search Through Keyword...."/>`);
+        temp_built = 0
+        update_display();
+
+
     }
 };
 
-var request_kind = 0;
 
 $('#searchBtn').click(() => {
-    if (request_kind == 1) {
-        x = ret_json
-        stringRep = JSON.stringify(x)
-        encoded = window.btoa(stringRep)
-        // alert(stringRep)
-        xhttp.open('GET', '/dbQuery?query=' + encoded, true);
-        xhttp.send(JSON.stringify(ret_json));
-    }
-    else {
-        // alert($('#smallString').val())
-        encoded = window.btoa($('#smallString').val())
-        xhttp.open('GET', '/smQuery?query=' + encoded, true);
-        xhttp.send(JSON.stringify(ret_json));
-    }
+    x = ret_json
+    stringRep = JSON.stringify(x)
+    encoded = window.btoa(stringRep)
+    // alert(stringRep)
+    xhttp.open('GET', '/dbQuery?query=' + encoded, true);
+    xhttp.send(JSON.stringify(ret_json));
+    ret_json = { Name: { 0: "", 1: "", 2: "" }, User: { 0: "", 1: "", 2: "" }, Views: { 0: "", 1: "", 2: "" }, Date: { 0: "", 1: "", 2: "" }, Premium: { 0: "" } };
+    update_display()
 })
-
-$('#Advance').click(() => {
-
-    // alert($('#wrapper').css('display')==='none')
-    if ($('#wrapper').css('display') === 'none') {
-        $('#wrapper').css('display', 'block');
-        request_kind = 1;
-    }
-    else {
-        request_kind = 0;
-        $('#wrapper').css('display', 'none');
-    }
-})
-associate_input_query();

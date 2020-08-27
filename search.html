@@ -21,6 +21,18 @@
 
 </head>
 
+<style>
+    .alert {
+        height: 40px;
+        padding: 7px;
+        padding-left: 24px;
+    }
+
+    .clossing_btn {
+        top: -8px;
+
+    }
+</style>
 
 <body class="body">
 
@@ -31,185 +43,46 @@
                     <h1 style="text-align: center;">DataBase Search</h1>
                 </strong></div>
         </div>
-        <div class="row m-1">
-            <div class="col-sm-2">
-                <h4>Filter your Search</h4>
+        <div class="row ">
+            <div class="col-lg-2" >
+                <h5>Filter your Search</h5>
             </div>
 
-            <div class="col-sm-8">
-                <input placeholder="Search the keyword" class="form-control" id="smallString" style="width:100%" />
+            <div class="col-lg-9 ">
+
+                <div class="form-group ">
+
+                    <div id="creteria" class="row  ">
+
+                        <select class="btn  btn-dark form-control columnSelector col-sm-2" data-index=0
+                            autocomplete="off">
+                            <option selected="selected"> Query</option>
+                            <option>Name</option>
+                            <option>User</option>
+                            <option>Views</option>
+                            <option>Date</option>
+                            <option>Premium</option>
+                        </select>
+                     <input  class="form-control rangeKeyword col" data-index=0 autocomplete="off" placeholder="Search Through Keyword...."/>
+                    </div>
+
+
+
+
+
+                </div>
             </div>
-            <div class="col-sm-1">
-                <button class="btn btn-primary" id="searchBtn"> Search</button>
+            <div class="col-sm-1 ">
+                <button class="btn btn-dark" id="searchBtn"> Search</button>
             </div>
-            <div class="col-sm-1">
-                <button class="btn btn-primary" id="Advance"> Advance</button>
-            </div>
+
 
         </div>
-        <div id="wrapper" style="display: none;">
-            <!-- keyword holder -->
-            <div class="row m-2  align-items-center">
-                <div class=" col-sm-6">
-                    <div class='row' id="keyword_holder0">
-
-                    </div>
-                </div>
-                <div class=" col-sm-6">
-                    <div class='row' id="keyword_holder1">
-
-                    </div>
-                </div>
-            </div>
-            <!-- for filter heading -->
-            <div class="row m-2 align-items-center">
-                <div class="col-sm-5"></div>
-                <div class="col-sm-2">
-                    Filter
-                </div>
-            </div>
-            <!-- name filter -->
-            <div id="nameGroup">
-                <!-- for name filter -->
-                <div class="row m-1">
-
-                    <div class="col-sm-1">
-                        Name
-                    </div>
-                    <div class="col-sm-2">
-
-                        <div class="form-group">
-
-                            <select class="form-control nameCri" data-index=0 autocomplete="off">
-                                <option selected="selected">Have</option>
-                                <option>End with</option>
-                                <option>Start with</option>
-                                <option>dont contain</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-8">
-                        <input class="form-control inputName input_name" data-index=0 autocomplete="off">
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary add_nm">
-                            <i class="fas fa-plus "></i>
-                        </button>
-                    </div>
-
-                    <!-- </div> -->
-
-                </div>
-            </div>
-            <!-- for views filter -->
-            <div id="viewGroup">
-                <div class="row m-2">
-
-                    <div class="col-sm-1">
-                        Views
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-
-                            <select class="form-control viewCri" id="view_1" data-index=0 autocomplete="off">
-                                <option selected="selected">More than</option>
-                                <option>Less than</option>
-                                <option>Equal to</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-8">
-                        <input class="form-control inputView input_view" data-index=0 autocomplete="off">
-                    </div>
 
 
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary add_view">
-                            <i class="fas fa-plus "></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- user filter -->
-            <div id='userGroup'>
-                <div class="row m-2">
+        <div class="container mt-2 table-responsive" id="tableDetails" style=" height: 100%; background-color: white;">
 
-                    <div class="col-sm-1">
-                        User
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-
-                            <select class="form-control userCri" id="view_1" data-index=0 autocomplete="off">
-                                <option selected="selected">More than</option>
-                                <option>Less than</option>
-                                <option>Equal to</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-8">
-                        <input class="form-control inputUser input_user" data-index=0 autocomplete="off">
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-primary add_user">
-                            <i class="fas fa-plus "></i>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-            <!-- date filter -->
-            <div id='dateGroup'>
-                <div class="row m-2 mb-0">
-                    <div class="col-sm-1">
-                        Last Update
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-
-                            <select class="form-control dateCri" autocomplete="off" data-index=0>
-                                <option selected="selected">After</option>
-                                <option>Before</option>
-                                <option>Between</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-4 m-auto ml-1">
-                        <input type="date" class="inputDate input_date" data-index=0 autocomplete='off'>
-                    </div>
-                    <div class="col-sm-4 m-auto ml-1">
-                        <input type="date" id="secondDate" class="inputDate input_date" data-index=1 autocomplete="off">
-                    </div>
-                </div>
-
-            </div>
-            <!-- premium filter -->
-            <div id='premiumGroup'>
-                <div class="row m-2 mt-3">
-
-                    <div class="col-sm-1">
-                        Preminum Required
-                    </div>
-                    <div class="col-sm-2">
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <input type="checkbox" checked data-toggle="toggle" id="premiumtoggle" autocomplete="off">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
-    </div>
-
-    <div class="container mt-2" id="tableDetails" style=" height: 100%; background-color: white;">
-
-    </div>
 
 
 </body>
