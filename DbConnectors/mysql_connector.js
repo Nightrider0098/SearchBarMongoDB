@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "employees",
+    host: "db4free.net",
+    user: "zoomlearner0098",
+    password: "MITohnasan@12345",
+    database: "githubdatabase",
     multipleStatements: true
 });
 con.connect(function (err) {
