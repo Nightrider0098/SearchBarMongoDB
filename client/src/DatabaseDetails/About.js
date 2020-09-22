@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 // import tag
+import AboutTags from './AboutTags'
 class About extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-           
+
             Description: "...",
             tags: ['...'],
             Owner: '...',
@@ -26,6 +27,13 @@ class About extends Component {
             alert("error before parsing" + err)
         })
 
+    }
+    BuildTags(TagArray) {
+        var retData =[]
+        for (var i = 0; i < TagArray.length; i++) {
+            retData.push(<AboutTags tag={TagArray[i]} />)
+        }
+        return retData
     }
     render() {
         return (
@@ -48,8 +56,7 @@ class About extends Component {
                             </div>
                             <div className='col-sm-10'>
                                 <div className='alert alert-info d-inline' style={{ 'width': '20%', 'margin-top': '5px', 'display': 'inline' }}>{this.state.Owner}</div>
-                                <div className='badge badge-info d-inline m-1'>{this.state.tags[0]}</div>
-                                {/* </div> */}
+                                {this.BuildTags(this.state.tags)}
                             </div>
                         </div>
 

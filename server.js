@@ -2,10 +2,10 @@ var express = require('express');
 const cors = require('cors')
 var app = express();
 // var mongoose = require('mongoose');
-var mysqlConnector = require('./mysql_connector')
+// var mysqlConnector = require('./DbConnectors/mysql_connector')
 var atob = require('atob');
 const path = require("path");
-const con = require('./mysql_connector');
+const con = require('./DbConnectors/mysql_connector');
 //app.use(express.static(path.join(__dirname, "\\Public\\")));
 const port = process.env.PORT || 5400;
 const datbaseEval =  require('./api/databaseEval')
@@ -212,14 +212,17 @@ app.get('/BigData', (req, res) => {
 // for datbaseEvalation
 app.use('/api',datbaseEval);
 
+
+
+// if(process.env.NODE_ENV==='production'){
+	app.use(express.static(path.join(__dirname, 'client','build')));
+// }
+
+
 app.use("*",(req,res)=>{
 	console.log("sending react index page");
-	res.send(path.join(__dirname, 'client','build','index'));
+	res.sendFile(path.join(__dirname, 'client','build','index.html'));
 })
-
-if(process.env.NODE_ENV==='production'){
-	app.use(express.static(path.join(__dirname, 'client','build')));
-}
 
 app.listen(port, () => {
     console.log(`listining on port ${port}`);

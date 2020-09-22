@@ -5,19 +5,51 @@ class Logs extends Component {
         super(props)
 
         this.state = {
+            colDetails: []
         }
     }
 
 
 
     componentDidMount() {
-        fetch('/api/FetchLogs?dbName=' + this.props.dbName).then(res => { return res.json() }).then(res => {
-            this.setState({...res['data']})
+        fetch('/api/FetchLogs?dbName=' + this.props.dbName).then(response => { return response.json() }).then(response => {
+            if (response['type'] === 'sucess') {
+                this.setState({ colDetails: JSON.parse(response['colDetails']) });
+            }
+            else if (response['type'] === 'error') alert(response['message'])
         }).catch(err => {
             console.log(err)
         })
     }
 
+
+    buildRows(Data) {
+        var data = Data
+        if (typeof (Data) == String)
+            data = JSON.parse(Data)
+        if (data === []) {
+            return (<tr>
+                <th scope="row">1</th>
+                <td>Data Is been fetched</td>
+                <td>...</td>
+                <td>...</td>
+            </tr>)
+        }
+        else {
+            var retData = []
+            for (var i = 0; i < data.length; i++) {
+                retData.push(<tr>
+                    <th scope="row">{i+1}</th>
+                    <td>{(data[i]["name"])}</td>
+                    <td>{(data[i]["type"])}</td>
+                    <td>{(data[i]["Fill"]*100)}%</td>
+                </tr>)
+
+            }
+            return retData
+
+        }
+    }
     render() {
         return (
             <div className='container' id='list-item-3'>
@@ -35,13 +67,9 @@ class Logs extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>buenpath</td>
-                                    <td>string</td>
-                                    <td>11%</td>
-                                </tr>
-
+                                {
+                                    this.buildRows(this.state.colDetails)
+                                }
                             </tbody>
                         </table>
                     </div>

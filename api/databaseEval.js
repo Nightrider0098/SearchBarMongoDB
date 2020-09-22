@@ -1,7 +1,7 @@
 const express = require("express");
 const Router = express.Router();
-const con = require('../mysql_connector')
-const mongoose = require('../mongodbConnector/mongodb-Connector')
+const con = require('../DbConnectors/mysql_connector')
+const mongoose = require('../DbConnectors/mongodb-Connector')
 const tableSchema = require('../modals/TableDeatils')
 // const mongoose = require('mongoose')
 Router.get('/FetchLogs', (req, res) => {
@@ -21,6 +21,7 @@ Router.get('/FetchLogs', (req, res) => {
             for (var i in result) {
                 databaseColumns.push({ 'name': result[i].Field, 'type': result[i].Type })
                 colName += "count(" + result[i].Field + ")/count(*) as " + result[i].Field + ","
+
             }
 
             statement = `select ${colName.substring(0, colName.length - 1)}  from ` + dbName
@@ -30,7 +31,14 @@ Router.get('/FetchLogs', (req, res) => {
                     res.json({ 'type': 'error', 'message': 'error in finding the null % for columns' })
                 }
                 else {
-                    res.json({ 'type': 'sucess', 'colName': JSON.stringify(databaseColumns), 'nullSpace': JSON.stringify(result) })
+                    console.log(result)
+                    for (var i in Object.keys(result[0])) {
+
+                        databaseColumns[i]['Fill'] = result[0][databaseColumns[i]['name']]
+
+                    }
+                    console.log(databaseColumns)
+                    res.json({ 'type': 'sucess', 'colDetails': JSON.stringify(databaseColumns)})
                 }
 
 
