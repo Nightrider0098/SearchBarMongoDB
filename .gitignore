@@ -1,5 +1,2 @@
-db-search-backend/node_modules
-db-search-backend/node_modules/*
-db-search/node_moudles
-db-search/node_moudles/*
 node_modules
+build

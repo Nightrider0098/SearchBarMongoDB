@@ -1,6 +1,0 @@
-database:-	 name student
-name of db:-	 appDetails
-columns		{name,user,views,lastUpdate,premiumAvailable}
-
-
-commands to 
