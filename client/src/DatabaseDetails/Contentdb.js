@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import PlotGraph from '../PlotGraph/plotGraph'
 class Content extends Component {
     constructor(props) {
         super(props)
@@ -7,14 +7,19 @@ class Content extends Component {
         this.state = {
             dbName: this.props.dbName,
             Alert: 'This table is not valid There are a lot of problme here can we correct it using some new features it would really help me this is a humble advice',
-            AlertHeading: "SiteOver Flow here"
+            AlertHeading: "SiteOver Flow here",
+            rows: { 'Total': "0 ", "Latest": '0 ' },
+            size: { 'Total': "0 ", "Latest": '0 ' },
+            updatelist: { data: [0, 1, 2, 3], labels: [0, 1, 2, 3] }
         }
     }
 
 
     componentDidMount() {
         fetch('/api/FetchContent?dbName=' + this.props.dbName).then(res => { return res.json() }).then(res => {
-            this.setState(res)
+            if (res['type'] === 'sucess')
+                this.setState({ size: res['data']['size'], rows: res['data']['rows'], updatelist: res['data']['TableReport']['UpdateSizeList'] })
+
         }).catch(err => {
             console.log(err)
         })
@@ -85,7 +90,9 @@ class Content extends Component {
 
                                         <tr>
                                             <td className='text-secondary'>Latest</td>
-                                            <td >1,210,161,857</td>
+                                            <td >
+                                                {(this.state.rows.Latest)} MB
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -98,12 +105,12 @@ class Content extends Component {
                                     <tbody>
                                         <tr>
                                             <td className='text-secondary'>Total</td>
-                                            <td >559 GB</td>
+                                            <td >{this.state.size.Total} GB</td>
                                         </tr>
 
                                         <tr>
                                             <td className='text-secondary'>Latest</td>
-                                            <td >9 GB</td>
+                                            <td >{this.state.size.Latest}  GB</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -112,34 +119,15 @@ class Content extends Component {
                         </div>
                         <div>
                             <strong>DS Partition Sizes</strong>
-                            <div>Charts</div>
+                            <div>
+                                <div>
+                                   <PlotGraph labels={this.state.updatelist['labels']} data={this.state.updatelist.data} />
+                                </div>
+
+
+                            </div>
                         </div>
-                        <div>
-                            <strong>Sub Partition Sizes</strong>
-                            <table class="table table-dark">
-                                <thead>
-                                    <tr>
-                                        <th>ds</th>
-                                        <th>Num Rows</th>
-                                        <th>Raw Sizes</th>
-                                        <th>Total Sizes</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-
-                                    <tr>
-                                        <td className='text-secondary'>2020-05-03</td>
-                                        <td>1,210,512,145</td>
-                                        <td>599 GB</td>
-                                        <td> 9.12 GB </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
                         </div>
-                    </div>
                 </div >
             </div >
         )

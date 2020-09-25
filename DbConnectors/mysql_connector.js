@@ -32,7 +32,6 @@ pool.getConnection((err, connection) => {
         }
     }
     console.log("connection pool establised with the mysql server")
-
     if (connection) connection.release()
 
     return

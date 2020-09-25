@@ -38,7 +38,7 @@ Router.get('/FetchLogs', (req, res) => {
 
                     }
                     console.log(databaseColumns)
-                    res.json({ 'type': 'sucess', 'colDetails': JSON.stringify(databaseColumns)})
+                    res.json({ 'type': 'sucess', 'colDetails': JSON.stringify(databaseColumns) })
                 }
 
 
@@ -52,10 +52,9 @@ Router.get('/FetchLogs', (req, res) => {
     // res.send(200)
 
 })
+const tableSc = mongoose.model('tableDetails', tableSchema)
 
 Router.get('/FetchAbout', (req, res) => {
-
-    const tableSc = mongoose.model('tableDetails', tableSchema)
     tableSc.findOne({}, (err, result) => {
         if (err) { console.log(err) }
         else {
@@ -66,9 +65,26 @@ Router.get('/FetchAbout', (req, res) => {
     })
 })
 
-
-
 Router.get('/FetchContent', (req, res) => {
-    res.json({ "type": "sucess", "data": { "rows": { "Total": null, "Latest": 1240161857 }, "Size": { "Total": 559, "Latest": 9 } } })
+    var dbName = req.query.dbName || 'emp',
+        retdata = {};
+    con.query("select ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) as size,table_rows as row_count from information_Schema.tables where table_name like '%" + dbName + "%' ", (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            result = result[0]
+            var size = { "Total": null, "Latest": result['size'] }
+            var rows = { "Total": result['row_count'], "Latest": result['row_count'] }
+            tableSc.findOne({}, (err, result) => {
+                if (err) { console.log(err) }
+                else {
+                    res.json({ "type": "sucess", "data": { "size": size, "rows": rows, "TableReport": result } })
+                }
+            })
+        }
+    })
+
 })
+
 module.exports = Router
