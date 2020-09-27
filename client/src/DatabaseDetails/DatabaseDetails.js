@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import About from './About'
-import Content from './Contentdb'
+import About from './About/About'
+import Content from './Content/Contentdb'
 import Logs from './Logs'
 
 class DatabaseDetails extends Component {
@@ -8,7 +8,8 @@ class DatabaseDetails extends Component {
         super(props)
 
         this.state = {
-            dbName: ""
+            dName: "githubdatabase",
+            tName: "emp"
         }
     }
 
@@ -19,7 +20,7 @@ class DatabaseDetails extends Component {
                     <div className='col-sm-2' >
 
                         <div id="list-example" className="list-group">
-                            <a className="list-group-item list-group-item-action" href="#list-item-1">About</a>
+                            <a className="list-group-item list-group-item-action active" href="#list-item-1">About</a>
                             <a className="list-group-item list-group-item-action" href="#list-item-2">Content</a>
                             <a className="list-group-item list-group-item-action" href="#list-item-3">logs</a>
                         </div>
@@ -28,9 +29,9 @@ class DatabaseDetails extends Component {
                     <div className='col-sm-9'>
                         <div data-spy="scroll" data-target="#list-example" data-offset="0" className="scrollspy-example">
 
-                            <About dbName={this.state.dbName} />
-                            <Content dbName={this.state.dbName} />
-                            <Logs dbName={this.state.dbName} />
+                            <About dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId} />
+                            <Content dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId} />
+                            <Logs dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId}/>
                         </div>
                     </div>
                 </div>

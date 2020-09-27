@@ -4,7 +4,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            current_query: 0, dbName: 'emp2', dbLength: 0, recieved_data: "", progress: 0
+            current_query: 0, dName: 'emp2', dbLength: 0, recieved_data: "", progress: 0
         }
         this.StartSearch = this.StartSearch.bind(this)
         this.StartContinue = this.StartContinue.bind(this)
@@ -38,7 +38,7 @@ class App extends React.Component {
     StartContinue() {
         this.setState({ current_query: current_query + 1 })
         if (current_query < 10) {
-            var sql_query = 'index=' + current_query + '&dbName=' + dbName + '&dbLength=10400'
+            var sql_query = 'index=' + current_query + '&dName=' + dName + '&dbLength=10400'
             xhttp.open('get', '/SearchBigContinue?' + sql_query)
             xhttp.send()
         }

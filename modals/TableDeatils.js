@@ -1,14 +1,12 @@
 const mongoose = require('mongoose')
 const tableSchema = new mongoose.Schema({
     tableId: String,
-    tableName: String,
-    Description: String,
-    tags: Object,
-    Owner: String,
-    createdBy: String,
-    createdAt: String,
-    LastModified: String,
-    dataQuality: String,
+    tName: String,
+    dName: String,
+    description: String,
+    tagList: Array,
+    owner: String,
+    onCallList : Array,
     updatedSizeList: Object
 
 })

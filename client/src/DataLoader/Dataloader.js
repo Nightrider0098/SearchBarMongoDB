@@ -5,7 +5,7 @@ class Dataloader extends Component {
         super(props)
 
         this.state = {
-            current_query: 0, dbName: 'emp2', dbLength: 0, recieved_data: "", progress: 0, status: "Status"
+            current_query: 0, dName: 'emp2', dbLength: 0, recieved_data: "", progress: 0, status: "Status"
         }
         this.StartSearch = this.StartSearch.bind(this)
         this.StartContinue = this.StartContinue.bind(this)
@@ -27,7 +27,7 @@ class Dataloader extends Component {
 
     StartContinue() {
         this.setState({ current_query: this.state.current_query + 1 })
-        var sql_query = 'index=' + this.state.current_query + '&dbName=' + this.state.dbName + '&dbLength=10400'
+        var sql_query = 'index=' + this.state.current_query + '&dName=' + this.state.dName + '&dbLength=10400'
         if (this.state.progress < 100) {
             fetch('/SearchBigContinue?' + sql_query).then(res => { return res.json() }).then(wholeData => {
                 Array.prototype.push.apply(wholeData.data, this.state.recieved_data);

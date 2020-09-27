@@ -12,7 +12,7 @@ class Logs extends Component {
 
 
     componentDidMount() {
-        fetch('/api/FetchLogs?dbName=' + this.props.dbName).then(response => { return response.json() }).then(response => {
+        fetch('/api/FetchLogs?dName=' + this.props.dName).then(response => { return response.json() }).then(response => {
             if (response['type'] === 'sucess') {
                 this.setState({ colDetails: JSON.parse(response['colDetails']) });
             }

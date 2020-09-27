@@ -164,7 +164,7 @@ var partitionDb = 5;
 
 // new project
 app.get("/SearchBig", (req, res) => {
-    var database_name = req.query.dbName || 'emp2'
+    var database_name = req.query.dName || 'emp2'
     var query_time = new Date()
     var db_length = 0;
     var index = 0
@@ -182,7 +182,7 @@ app.get("/SearchBig", (req, res) => {
 app.get("/SearchBigContinue", (req, res) => {
     var index = req.query.index || 1
     var db_length = req.query.dbLength || 10040
-    var database_name = req.query.dbName || 'emp2'
+    var database_name = req.query.dName || 'emp2'
     console.log(index)
     var timeStamp = new Date()
     mysqlConnector.query('select * from ' + database_name + ' join  (select * from ' + database_name + ' limit ' + parseInt(index * db_length / partitionDb) + ',' + db_length / partitionDb + ')d on ' + database_name + '.id in (d.id) where d.name like "%1%"', (error, result) => {
@@ -193,7 +193,7 @@ app.get("/SearchBigContinue", (req, res) => {
 })
 app.get('/BigData', (req, res) => {
     // when metadata dont exists;
-    var database_name = req.query.dbName || 'emp2'
+    var database_name = req.query.dName || 'emp2'
 
     var data;
 
