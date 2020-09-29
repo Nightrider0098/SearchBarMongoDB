@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Tag.css'
 export class OnCall extends Component {
     constructor(props) {
         super(props)
@@ -52,7 +53,7 @@ export class OnCall extends Component {
         if (this.state.onCallUpdating === 1) {
             return <i className="fa-2x fas fa-cog fa-spin"></i>
         }
-        else { return<i class="fa-2x fas fa-users-cog"></i> }
+        else { return <i class="fa-2x fas fa-users-cog"></i> }
     }
     removeOnCall(person) {
         var t1 = this.state.onCallList;
@@ -81,12 +82,18 @@ export class OnCall extends Component {
             const n = i;
             ret.push(
 
-                <div class="alert alert-warning alert-dismissible fade show col-2 m-1" role="alert">
-                    {tList[n]}
-                    <button type="button" onClick={() => this.removeOnCall(tList[n])} class="close"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>)
+                <span className="tag pill-input">
+                    <input type="text" size="1" value={tList[i]} disabled={true} />
+                    <i className="delete" onClick={() => { this.removeOnCall(tList[n]) }}  >&times;</i>
+                </span>
+
+                // <div class="alert alert-warning alert-dismissible fade show col-2 m-1" role="alert">
+                //     {tList[n]}
+                //     <button type="button" onClick={() => this.removeOnCall(tList[n])} class="close"  aria-label="Close">
+                //         <span aria-hidden="true">&times;</span>
+                //     </button>
+                // </div>
+            )
         }
         return ret;
     }
@@ -99,11 +106,12 @@ export class OnCall extends Component {
                         <div className="input-group-text">
                             {this.loadingIcon()}
                         </div>
-                        <input className="form-control" onChange={this.NewOnCallHandler} value={this.state.newOnCall} placeholder="Add a new onCall" onKeyPress={this.submitOnCall} id="onCall" />
+                        <div className="input-group-text bg-white" >
+                            {this.buildOnCall(this.state.onCallList)}
+                        </div>
+
+                        <input className="form-control tag-inline" onChange={this.NewOnCallHandler} value={this.state.newOnCall} placeholder="Add a new onCall" onKeyPress={this.submitOnCall} id="onCall" />
                     </div>
-                </div>
-                <div className='container row m-2' style={{marginTop:'10px'}}>
-                    {this.buildOnCall(this.state.onCallList)}
                 </div>
             </div>)
     }

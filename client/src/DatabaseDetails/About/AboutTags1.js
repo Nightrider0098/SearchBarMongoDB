@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './Tag.css'
 class AboutTags1 extends Component {
     constructor(props) {
         super(props)
@@ -48,7 +49,7 @@ class AboutTags1 extends Component {
         if (this.state.tagsUpdating === 1) {
             return <i className="fa-2x fas fa-cog fa-spin"></i>
         }
-        else { return <i class="fa-2x fas fa-tag"></i> }
+        else { return <i className="fa-2x fas fa-tag"></i> }
     }
     buildTags(tList) {
         // alert(tList)
@@ -57,13 +58,19 @@ class AboutTags1 extends Component {
 
             const d = i;
             ret.push(
-                <div class="alert alert-warning alert-dismissible fade show col-2 m-1" role="alert">
-                    {tList[i]}
+                <span className="tag pill-input">
+                    <input type="text" size="1" value={tList[i]} disabled={true} />
+                    <i className="delete" onClick={() => { this.removeTag(tList[d]) }}  >&times;</i>
+                </span>
 
-                    <button type="button" onClick={() => { this.removeTag(tList[d]) }} class="close" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>)
+                // <div className="alert alert-warning alert-dismissible fade show col-2 m-1" role="alert">
+
+
+                // <button type="button" onClick={() => { this.removeTag(tList[d]) }} className="close" aria-label="Close">
+                //     <span aria-hidden="true">&times;</span>
+                // </button>
+                // </div>
+            )
         }
         return ret;
     }
@@ -102,6 +109,16 @@ class AboutTags1 extends Component {
 
     render() {
         return (
+
+            // <div className="features">
+            //     <span className="tag pill-input">
+            //         <input type="text" size="1" value={this.state.tagList[0]} />
+            //         <i className="delete">&times;</i>
+
+            //     </span>
+            //     <input type="text" size="1"  value={this.state.tagList[0]} />
+            // </div>
+
             <div className="form-group">
                 <label for="tags">Tags</label>
                 <div className="input-group">
@@ -109,12 +126,14 @@ class AboutTags1 extends Component {
                         <div className="input-group-text">
                             {this.LoadingIcon()}
                         </div>
-                        <input className="form-control" onChange={this.newTagHandler} value={this.state.newTag} placeholder="Add a new tag" onKeyPress={this.enterHandler} id="tags" />
+                        <div className="input-group-text bg-white" > 
+                            {this.buildTags(this.state.tagList)}
+                        </div>
+                        <input className="form-control tag-inline"  style={{ borderLeft: 'none' }} onChange={this.newTagHandler} value={this.state.newTag} placeholder="Add a new tag" onKeyPress={this.enterHandler} id="tags" />
                     </div>
                 </div>
-                <div className='container row m-2' style={{marginTop:'10px'}}>
-                    {this.buildTags(this.state.tagList)}
-                </div>
+                {/* <div className='container row m-2' style={{ marginTop: '10px' }}> */}
+
             </div>)
     }
 }

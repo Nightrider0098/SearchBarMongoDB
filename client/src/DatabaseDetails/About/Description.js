@@ -60,7 +60,7 @@ class AboutDescription extends Component {
                         <div className="input-group-text">
                             {this.descLoadingHanlder()}
                         </div>
-                        <input className="form-control" onChange={this.inputHandler} value={this.state.description} placeholder="No description Could Be found" onKeyPress={this.descriptionHandler} id="discription" />
+                        <input className="form-control tag-inline" onChange={this.inputHandler} value={this.state.description} placeholder="No description Could Be found" onKeyPress={this.descriptionHandler} id="discription" />
                     </div>
                 </div>
             </div>
