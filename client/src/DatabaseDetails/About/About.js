@@ -12,15 +12,15 @@ class About extends Component {
             createdAt: '...',
             lastModified: '...',
             tName: 'emp',
-            dName: 'githubdatabase'
+            dbName: 'githubdatabase'
         }
     }
 
     componentDidMount() {
-        fetch('/api/FetchAbout?dName=' + this.props.dName,).then(response => response.json()).then(data => {
+        fetch('/api/FetchAbout?dbName=' + this.props.dbName+'&tName=' + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
             this.setState({ ...data['data'], createdAt: data['createdAt'], LastModified: data['LastModified'] })
         }).catch((err) => {
-            console.log("error while fetching details about tableDescription")
+            console.log("error while fetching details about tableDescription",err)
         })
     }
     render() {
@@ -29,9 +29,9 @@ class About extends Component {
                 <div className="panel panel-default">
                     <div className="panel-heading"><strong>About</strong></div>
                     <div className="panel-body">
-                        <Description tName={this.state.tName} dName={this.state.dName} />
-                        <Tags tName={this.state.tName} dName={this.state.dName} />
-                        <OnCall tName={this.state.tName} dName={this.state.dName} />
+                        <Description tName={this.props.tName} dbName={this.props.dbName}  dbType={this.props.dbType}/>
+                        <Tags tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType}/>
+                        <OnCall tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType}/>
                         <div className="row">
                             <div className='col-sm-2' >Owner</div>
                             <div className='col-sm-10'>

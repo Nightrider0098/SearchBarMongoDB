@@ -30,7 +30,9 @@ class AboutTags1 extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    tableId: this.props.tableId || 'T001',
+                    tName: this.props.tName,
+                    dbType: this.props.dbType,
+                    dbName: this.props.dbName,
                     updatedTags: tagList
                 })
             }
@@ -86,11 +88,14 @@ class AboutTags1 extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                tableId: this.props.tableId || 'T001',
+                tName: this.props.tName,
+                dbType: this.props.dbType,
+                dbName: this.props.dbName,
                 updatedTags: nt1
             })
         }
         fetch('/api/updateTags', options).then(ret => { return ret.json() }).then(ret => {
+            
             if (ret['type'] === 'sucessful') {
                 this.setState({ tagsUpdating: 0 })
             }
@@ -98,7 +103,7 @@ class AboutTags1 extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/tableTags?dName=' + encodeURI(this.props.dName) + "&tName=" + encodeURI(this.props.tName)).then(res => { return res.json() }).then(res => {
+        fetch('/api/tableTags?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
             if (res['type'] === 'sucess') {
                 this.setState({ tagList: res['data']['tagList'] })
             }
@@ -110,15 +115,7 @@ class AboutTags1 extends Component {
     render() {
         return (
 
-            // <div className="features">
-            //     <span className="tag pill-input">
-            //         <input type="text" size="1" value={this.state.tagList[0]} />
-            //         <i className="delete">&times;</i>
-
-            //     </span>
-            //     <input type="text" size="1"  value={this.state.tagList[0]} />
-            // </div>
-
+          
             <div className="form-group">
                 <label for="tags">Tags</label>
                 <div className="input-group">
@@ -132,8 +129,7 @@ class AboutTags1 extends Component {
                         <input className="form-control tag-inline"  style={{ borderLeft: 'none' }} onChange={this.newTagHandler} value={this.state.newTag} placeholder="Add a new tag" onKeyPress={this.enterHandler} id="tags" />
                     </div>
                 </div>
-                {/* <div className='container row m-2' style={{ marginTop: '10px' }}> */}
-
+               
             </div>)
     }
 }

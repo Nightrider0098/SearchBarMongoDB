@@ -14,7 +14,7 @@ export class OnCall extends Component {
         this.removeOnCall = this.removeOnCall.bind(this)
     }
     componentDidMount() {
-        fetch('/api/tableOnCall?dName=' + encodeURI(this.props.dName) + "&tName=" + encodeURI(this.props.tName)).then(res => { return res.json() }).then(res => {
+        fetch('/api/tableOnCall?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
             if (res['type'] === 'sucess') {
                 this.setState({ onCallList: res['data']['onCallList'] })
             }
@@ -34,7 +34,9 @@ export class OnCall extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    tableId: this.props.tableId || 'T001',
+                    tName: this.props.tName,
+                    dbType: this.props.dbType,
+                    dbName: this.props.dbName,
                     updatedOnCall: onCallList
                 })
             }
@@ -66,7 +68,9 @@ export class OnCall extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                tableId: this.props.tableId || 'T001',
+                tName: this.props.tName,
+                dbType: this.props.dbType,
+                dbName: this.props.dbName,
                 updatedOnCall: t1
             })
         }
@@ -86,13 +90,6 @@ export class OnCall extends Component {
                     <input type="text" size="1" value={tList[i]} disabled={true} />
                     <i className="delete" onClick={() => { this.removeOnCall(tList[n]) }}  >&times;</i>
                 </span>
-
-                // <div class="alert alert-warning alert-dismissible fade show col-2 m-1" role="alert">
-                //     {tList[n]}
-                //     <button type="button" onClick={() => this.removeOnCall(tList[n])} class="close"  aria-label="Close">
-                //         <span aria-hidden="true">&times;</span>
-                //     </button>
-                // </div>
             )
         }
         return ret;

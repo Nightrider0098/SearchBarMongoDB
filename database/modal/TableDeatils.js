@@ -3,7 +3,6 @@ const tableSchema = new mongoose.Schema({
     tableId: String,
     tName: String,
     dbName: String,
-    dbType:String,
     description: String,
     tagList: Array,
     owner: String,

@@ -1,5 +1,6 @@
 import { Line } from 'react-chartjs-2';
 import React, { Component } from 'react'
+import './Styles.css'
 // import Barchar from './Barchart'
 class plotGraph extends Component {
     render() {

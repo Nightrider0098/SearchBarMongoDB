@@ -1,32 +1,33 @@
 import React, { Component } from 'react'
 import PlotGraph from './UpdateTrackGraph'
 import ContentGraph from './PartitionGraph'
+import './Styles.css'
 class Content extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            dName: this.props.dName,
+            dbName: this.props.dbName,
             Alert: 'This table is not valid There are a lot of problme here can we correct it using some new features it would really help me this is a humble advice',
             AlertHeading: "SiteOver Flow here",
             rows: { 'Total': "0 ", "Latest": '0 ' },
             size: { 'Total': "0 ", "Latest": '0 ' },
-            updatelist: { data: [0, 1, 2, 3], labels: [0, 1, 2, 3] },
+            updateSizeList: { data: [0, 3, 9, 34, 42, 54, 56, 87, 99, 102, 109, 201], labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
             partition: [{ 'size': 0, 'row_count': 0 }]
         }
     }
 
 
     componentDidMount() {
-        fetch('/api/FetchContent?dName=' + this.props.dName + '&tName=' + encodeURI(this.props.tName)).then(res => { return res.json() }).then(res => {
+        fetch('/api/FetchContent?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
             if (res['type'] === 'sucess')
-                this.setState({ size: res['data']['size'], rows: res['data']['rows'], updatelist: res['data']['tableReport']['updateSizeList'] })
+                this.setState({ size: res['data']['size'], rows: res['data']['rows'], updateSizeList: res['data']['updateSizeList'] })
 
         }).catch(err => {
             console.log(err)
         })
 
-        fetch('/api/partitionDetails?dName=' + this.props.dName).then(res => { return res.json() }).then(res => {
+        fetch('/api/partitionDetails?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
             if (res['type'] === 'sucessful')
                 this.setState({ partition: res['response'] })
 
@@ -78,7 +79,7 @@ class Content extends Component {
 
                                         <tr>
                                             <td className='text-secondary'>Average Size</td>
-                                            <td >{this.partitionAverageSize(this.state.partition)} MB</td>
+                                            <td >{this.partitionAverageSize(this.state.partition)} </td>
                                         </tr>
 
 
@@ -118,12 +119,12 @@ class Content extends Component {
                                     <tbody>
                                         <tr>
                                             <td className='text-secondary'>Total</td>
-                                            <td >{this.state.size.Latest} GB</td>
+                                            <td >{this.state.size.Latest} </td>
                                         </tr>
 
                                         <tr>
                                             <td className='text-secondary'>Latest</td>
-                                            <td >{Math.round(this.state.size.Latest / 5)}  GB</td>
+                                            <td>{this.state.size.Latest}</td>
                                         </tr>
 
 
@@ -135,8 +136,8 @@ class Content extends Component {
                         <div>
                             <strong>DS Partition Sizes</strong>
                             <div>
-                                <div>
-                                    <PlotGraph labels={this.state.updatelist['labels']} data={this.state.updatelist.data} />
+                                <div style={{ 'display': 'block' }}>
+                                    <PlotGraph labels={ this.state.updateSizeList.labels } data={this.state.updateSizeList.data} /> 
                                 </div>
 
 

@@ -7,9 +7,16 @@ class DatabaseDetails extends Component {
     constructor(props) {
         super(props)
 
+        // this.state = {
+        //     dbName: "githubdatabase",
+        //     tName: "emp",
+        //     dbType: 'mysql'
+        // }
+        
         this.state = {
-            dName: "githubdatabase",
-            tName: "emp"
+            dbName: "oexslycq",
+            tName: "turtle_life_table",
+            dbType: 'pg'
         }
     }
 
@@ -29,9 +36,9 @@ class DatabaseDetails extends Component {
                     <div className='col-sm-9'>
                         <div data-spy="scroll" data-target="#list-example" data-offset="0" className="scrollspy-example">
 
-                            <About dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId} />
-                            <Content dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId} />
-                            <Logs dName={this.state.dName} tName={this.state.tName} tableId={this.state.tableId}/>
+                            <About dbName={this.state.dbName} tName={this.state.tName} dbType={this.state.dbType} />
+                            <Content dbName={this.state.dbName} tName={this.state.tName} dbType={this.state.dbType}  />
+                            <Logs dbName={this.state.dbName} tName={this.state.tName} dbType={this.state.dbType} />
                         </div>
                     </div>
                 </div>

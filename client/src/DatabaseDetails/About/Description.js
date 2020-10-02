@@ -14,7 +14,7 @@ class AboutDescription extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/tableDescription?dName=' + encodeURI(this.props.dName) + '&tName=' + encodeURI(this.props.tName)).then(response => response.json()).then(data => {
+        fetch('/api/tableDescription?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
             if (data['type'] === 'sucess')
                 this.setState({ description: data['data']['description'] })
         }).catch(err => {
@@ -30,7 +30,9 @@ class AboutDescription extends Component {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    tableId: this.props.tableId || 'T001',
+                    tName: this.props.tName,
+                    dbType: this.props.dbType,
+                    dbName: this.props.dbName,
                     updatedDescription: event.target.value
                 })
             }
