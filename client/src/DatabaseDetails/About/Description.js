@@ -14,7 +14,17 @@ class AboutDescription extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/tableDescription?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
+        fetch('/api/tableDescription?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
+            if (data['type'] === 'sucess')
+                this.setState({ description: data['data']['description'] })
+        }).catch(err => {
+            alert("error before parsing" + err)
+        })
+    }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType)
+        fetch('/api/tableDescription?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
             if (data['type'] === 'sucess')
                 this.setState({ description: data['data']['description'] })
         }).catch(err => {

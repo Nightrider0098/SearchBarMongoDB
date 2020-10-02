@@ -35,6 +35,26 @@ class Content extends Component {
             console.log(err)
         })
     }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType) {
+            fetch('/api/FetchContent?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
+                if (res['type'] === 'sucess')
+                    this.setState({ size: res['data']['size'], rows: res['data']['rows'], updateSizeList: res['data']['updateSizeList'] })
+
+            }).catch(err => {
+                console.log(err)
+            })
+
+            fetch('/api/partitionDetails?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
+                if (res['type'] === 'sucessful')
+                    this.setState({ partition: res['response'] })
+
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }
     partitionAverageRows(partition) {
 
         var avg = 0;
@@ -54,9 +74,7 @@ class Content extends Component {
         return avg / partition.length
 
     }
-    componentDidUpdate() {
-        console.log(this.state)
-    } render() {
+    render() {
         return (
             <div className='container' id='list-item-2'>
                 <div className="panel panel-default">
@@ -137,7 +155,7 @@ class Content extends Component {
                             <strong>DS Partition Sizes</strong>
                             <div>
                                 <div style={{ 'display': 'block' }}>
-                                    <PlotGraph labels={ this.state.updateSizeList.labels } data={this.state.updateSizeList.data} /> 
+                                    <PlotGraph labels={this.state.updateSizeList.labels} data={this.state.updateSizeList.data} />
                                 </div>
 
 

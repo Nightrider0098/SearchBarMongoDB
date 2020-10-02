@@ -12,7 +12,7 @@ class Logs extends Component {
 
 
     componentDidMount() {
-        fetch('/api/FetchLogs?dbName=' + this.props.dbName+ "&tName=" + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(response => { return response.json() }).then(response => {
+        fetch('/api/FetchLogs?dbName=' + this.props.dbName + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => { return response.json() }).then(response => {
             if (response['type'] === 'sucess') {
                 this.setState({ colDetails: JSON.parse(response['colDetails']) });
             }
@@ -20,6 +20,18 @@ class Logs extends Component {
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType)
+            fetch('/api/FetchLogs?dbName=' + this.props.dbName + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => { return response.json() }).then(response => {
+                if (response['type'] === 'sucess') {
+                    this.setState({ colDetails: JSON.parse(response['colDetails']) });
+                }
+                else if (response['type'] === 'error') alert(response['message'])
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
 
@@ -39,10 +51,10 @@ class Logs extends Component {
             var retData = []
             for (var i = 0; i < data.length; i++) {
                 retData.push(<tr>
-                    <th scope="row">{i+1}</th>
+                    <th scope="row">{i + 1}</th>
                     <td>{(data[i]["name"])}</td>
                     <td>{(data[i]["type"])}</td>
-                    <td>{(data[i]["Fill"]*100)}%</td>
+                    <td>{(data[i]["Fill"] * 100)}%</td>
                 </tr>)
 
             }

@@ -17,11 +17,20 @@ class About extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/FetchAbout?dbName=' + this.props.dbName+'&tName=' + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
+        fetch('/api/FetchAbout?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
             this.setState({ ...data['data'], createdAt: data['createdAt'], LastModified: data['LastModified'] })
         }).catch((err) => {
-            console.log("error while fetching details about tableDescription",err)
+            console.log("error while fetching details about tableDescription", err)
         })
+    }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType)
+            fetch('/api/FetchAbout?dbName=' + this.props.dbName + '&tName=' + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(response => response.json()).then(data => {
+                this.setState({ ...data['data'], createdAt: data['createdAt'], LastModified: data['LastModified'] })
+            }).catch((err) => {
+                console.log("error while fetching details about tableDescription", err)
+            })
     }
     render() {
         return (
@@ -29,13 +38,13 @@ class About extends Component {
                 <div className="panel panel-default">
                     <div className="panel-heading"><strong>About</strong></div>
                     <div className="panel-body">
-                        <Description tName={this.props.tName} dbName={this.props.dbName}  dbType={this.props.dbType}/>
-                        <Tags tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType}/>
-                        <OnCall tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType}/>
+                        <Description tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType} />
+                        <Tags tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType} />
+                        <OnCall tName={this.props.tName} dbName={this.props.dbName} dbType={this.props.dbType} />
                         <div className="row">
                             <div className='col-sm-2' >Owner</div>
                             <div className='col-sm-10'>
-                                {this.state.Owner}
+                                {this.state.owner}
                             </div>
                         </div>
                         <div className='row'>

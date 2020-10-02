@@ -23,6 +23,18 @@ export class OnCall extends Component {
             console.log('failed to fetch tag details')
         })
     }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType)
+        fetch('/api/tableOnCall?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
+            if (res['type'] === 'sucess') {
+                this.setState({ onCallList: res['data']['onCallList'] })
+            }
+        }).catch(err => {
+            // alert(err)
+            console.log('failed to fetch tag details')
+        })
+    }
     submitOnCall(event) {
         if (event.charCode === 13) {
             var onCallList = this.state.onCallList

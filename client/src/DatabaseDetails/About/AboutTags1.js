@@ -95,7 +95,7 @@ class AboutTags1 extends Component {
             })
         }
         fetch('/api/updateTags', options).then(ret => { return ret.json() }).then(ret => {
-            
+
             if (ret['type'] === 'sucessful') {
                 this.setState({ tagsUpdating: 0 })
             }
@@ -103,7 +103,7 @@ class AboutTags1 extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/tableTags?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName)+"&dbType="+encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
+        fetch('/api/tableTags?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
             if (res['type'] === 'sucess') {
                 this.setState({ tagList: res['data']['tagList'] })
             }
@@ -111,11 +111,20 @@ class AboutTags1 extends Component {
             console.log('failed to fetch tag details')
         })
     }
-
+    componentDidUpdate(preProps, preState) {
+        if (preProps.dbType !== this.props.dbType)
+            fetch('/api/tableTags?dbName=' + encodeURI(this.props.dbName) + "&tName=" + encodeURI(this.props.tName) + "&dbType=" + encodeURIComponent(this.props.dbType)).then(res => { return res.json() }).then(res => {
+                if (res['type'] === 'sucess') {
+                    this.setState({ tagList: res['data']['tagList'] })
+                }
+            }).catch(err => {
+                console.log('failed to fetch tag details')
+            })
+    }
     render() {
         return (
 
-          
+
             <div className="form-group">
                 <label for="tags">Tags</label>
                 <div className="input-group">
@@ -123,13 +132,13 @@ class AboutTags1 extends Component {
                         <div className="input-group-text">
                             {this.LoadingIcon()}
                         </div>
-                        <div className="input-group-text bg-white" > 
+                        <div className="input-group-text bg-white" >
                             {this.buildTags(this.state.tagList)}
                         </div>
-                        <input className="form-control tag-inline"  style={{ borderLeft: 'none' }} onChange={this.newTagHandler} value={this.state.newTag} placeholder="Add a new tag" onKeyPress={this.enterHandler} id="tags" />
+                        <input className="form-control tag-inline" style={{ borderLeft: 'none' }} onChange={this.newTagHandler} value={this.state.newTag} placeholder="Add a new tag" onKeyPress={this.enterHandler} id="tags" />
                     </div>
                 </div>
-               
+
             </div>)
     }
 }
